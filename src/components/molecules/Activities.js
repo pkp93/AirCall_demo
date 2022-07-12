@@ -1,0 +1,115 @@
+import React, { useState, useEffect } from "react";
+
+import { useSelector } from "react-redux";
+import moment from "moment";
+
+import "./Activities.css";
+import Details from "../molecules/Details";
+import ActivityCard from "../atom/ActivityCard";
+import FullScreenLoader from "./FullScreenLoader";
+
+const Activities = ({ items = [], type, primColor }) => {
+  const [showDets, setShowDets] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
+  const callData = useSelector((state) => state.callReducers.callData);
+  const { isFetching, data: updateData } = useSelector(
+    (state) => state.callReducers.updateData
+  );
+  const {
+    data: { byDateAc, byDateAr }
+  } = callData;
+  let keysAc = Object.keys(byDateAc);
+  let keysAr = Object.keys(byDateAr);
+  // const [] = useState()
+  useEffect(() => {
+    if (updateData || isFetching) {
+      setShowLoader(true);
+    } else {
+      setShowLoader(false);
+    }
+  }, [updateData, isFetching]);
+
+  return (
+    <div
+      className="activites-container"
+      // style={{
+      //   display: "flex",
+      //   flexDirection: "column",
+      //   alignItems: "center",
+      //   width: "100%",
+      //   overflow: "scroll",
+      //   marginTop: "0px",
+      //   height: "100%",
+      //   paddingBottom: "50%"
+      // }}
+    >
+      <FullScreenLoader show={showLoader} />
+      {showDets ? (
+        <Details item={showDets} goBack={() => setShowDets(false)} />
+      ) : (
+        <div
+          className="activities-feed-container"
+          // style={{
+          //   width: "100%",
+          //   display: "flex",
+          //   flexDirection: "column",
+          //   alignItems: "center",
+          //   justifyContent: "center"
+          // }}
+        >
+          {type === "activity" && keysAc.length
+            ? keysAc.map((date) => (
+                <div
+                  className="activities-map"
+                  // style={{
+                  //   width: "100%",
+                  //   display: "flex",
+                  //   flexDirection: "column",
+                  //   alignItems: "center",
+                  //   justifyContent: "center"
+                  // }}
+                >
+                  <p>{moment(date).format("DD MMM YYYY, dddd")}</p>
+                  {byDateAc[date].map((item) => (
+                    <ActivityCard
+                      primColor={primColor}
+                      type={type}
+                      details={() => setShowDets(item)}
+                      item={item}
+                    />
+                  ))}
+                </div>
+              ))
+            : type === "activity" && <div>No Activity</div>}
+
+          {type === "archive" && keysAr.length
+            ? keysAr.map((date) => (
+                <div
+                  className="activities-map"
+                  // style={{
+                  //   width: "100%",
+                  //   display: "flex",
+                  //   flexDirection: "column",
+                  //   alignItems: "center",
+                  //   justifyContent: "center"
+                  // }}
+                >
+                  <p>{moment(date).format("DD MMM YYYY, dddd")}</p>
+                  {byDateAr[date].map((item) => (
+                    <ActivityCard
+                      primColor={primColor}
+                      type={type}
+                      details={() => setShowDets(item)}
+                      item={item}
+                    />
+                  ))}
+                </div>
+              ))
+            : type === "archive" && <div>No archived calls</div>}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Activities;
