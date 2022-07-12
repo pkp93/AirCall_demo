@@ -1,2 +1,8 @@
 # AirCall_demo
-Created with CodeSandbox
+
+Note:- Please try out with both phone dimension and desktop dimension
+
+
+
+
+
