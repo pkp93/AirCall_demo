@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 
 import "./Dialpad";
-import { PHONE_DIAL_COLOR, VIDEO_DIAL_COLOR } from "../Constants";
+import { PHONE_DIAL_COLOR, VIDEO_DIAL_COLOR, BRAND_COLOR } from "../Constants";
 import PhoneButton from "../atom/PhoneButton";
 import VideoButton from "../atom/VideoButton";
 import DialerNumber from "../molecules/DialerNumber";
@@ -114,7 +114,9 @@ const Dialpad = ({ handleBack, showBrand }) => {
                 border: "0",
                 padding: "10px",
                 borderRadius: "5px",
-                marginTop: "20px"
+                marginTop: "20px",
+                cursor: "pointer",
+                backgroundImage: `linear-gradient(to right, black, ${BRAND_COLOR})`
               }}
               onClick={() => setShowPlanModal(false)}
             >
